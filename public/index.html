@@ -1,12 +1,783 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!doctype html>
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>BTEC zone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1220; --card:#121b2e; --muted:#93a4c7; --text:#eaf0ff;
+      --brand:#2b7cff; --brand2:#00c2ff; --ok:#2bd47c; --danger:#ff4d6d;
+      --shadow: 0 16px 40px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Tajawal",system-ui,Segoe UI,Arial; background:radial-gradient(1200px 800px at 20% -10%, rgba(43,124,255,.35), transparent 55%),
+      radial-gradient(900px 700px at 110% 10%, rgba(0,194,255,.25), transparent 45%),
+      var(--bg); color:var(--text);}
+    a{color:inherit;text-decoration:none}
+    header{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(10px);
+      background: rgba(11,18,32,.65);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:14px 16px}
+    .topbar{display:flex;align-items:center;gap:12px;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{width:38px;height:38px}
+    .brand b{font-size:18px}
+    nav{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      padding:10px 12px;border-radius:999px; cursor:pointer;
+      transition:.15s; font-weight:600;
+    }
+    .btn:hover{transform:translateY(-1px); background: rgba(255,255,255,.08)}
+    .btn.primary{background:linear-gradient(90deg,var(--brand),var(--brand2)); border:none}
+    .btn.danger{background:rgba(255,77,109,.14); border:1px solid rgba(255,77,109,.35)}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+    .card{
+      background: rgba(18,27,46,.92);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:16px;
+    }
+    .muted{color:var(--muted)}
+    h1{margin:0 0 8px;font-size:28px}
+    h2{margin:0 0 8px;font-size:20px}
+    .pill{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.1); color:var(--muted); font-weight:600; font-size:13px}
+    .track{grid-column: span 4}
+    @media (max-width: 900px){ .track{grid-column:span 6} }
+    @media (max-width: 620px){ .track{grid-column:span 12} }
+    .list{display:flex;flex-direction:column;gap:10px}
+    .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .input{width:100%;padding:12px 12px;border-radius:12px;background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12); color:var(--text); outline:none}
+    .input:focus{border-color: rgba(43,124,255,.6)}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media(max-width:700px){.two{grid-template-columns:1fr}}
+    .slideTop{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .slideBrand{display:flex;align-items:center;gap:10px}
+    .slideBrand img{width:34px;height:34px}
+    .kbd{font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background: rgba(0,0,0,.35);
+      padding:10px;border-radius:14px;border:1px solid rgba(255,255,255,.1); white-space:pre; overflow:auto}
+    .points{margin:10px 0 0; padding:0 18px}
+    .points li{margin:6px 0; color:#dbe6ff}
+    .tagOk{color:var(--ok); font-weight:800}
+    .tagBad{color:var(--danger); font-weight:800}
+    footer{padding:30px 0;color:rgba(255,255,255,.55);text-align:center}
+  
+  .slideCredit{margin-top:4px;font-size:11px;color:var(--muted)}
+  footer{padding:14px 0;text-align:center;color:var(--muted);font-size:12px}
+</style>
 </head>
-<body style="font-family: Arial; text-align: center; margin-top: 60px;">
-  <h1>منصة BTEC zone</h1>
-  <p>الموقع شغال بنجاح 🎉</p>
-  <p>أهلًا وسهلًا بكم</p>
+<body>
+<header>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand" onclick="go('#/')" style="cursor:pointer">
+        <img src="/assets/logo.svg" alt="BTEC"/>
+        <div>
+          <b>BTEC zone</b><div class="muted" style="font-size:12px">منصة تعليم تكنولوجيا المعلومات</div>
+        </div>
+      </div>
+      <nav>
+        <button class="btn" onclick="go('#/')">الرئيسية</button>
+        <button class="btn" onclick="go('#/tasks')">المهمات</button>
+        <button class="btn" onclick="go('#/search')">بحث</button>
+        <button class="btn" onclick="go('#/assistant')">مساعد</button>
+        <button class="btn" onclick="go('#/login')">تسجيل الدخول</button>
+        <button class="btn primary" onclick="go('#/admin')">لوحة التحكم</button>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+<footer>© منصة BTEC zone — إعداد وتطوير: مهندس · <a href="https://instagram.com/btec_zone.2_008" target="_blank" rel="noopener">Instagram @btec_zone.2_008</a></footer>
+
+<script>
+  const API = "/api";
+  const state = { tracks:[], lessons:[], generations:[], tasks:[], taskDocs:[], token:"", adminToken:"" };
+  const CREDIT = "إعداد وتطوير: مهندس – منصة BTEC zone";
+
+  function go(h){ location.hash = h; }
+  function esc(s){ return String(s??"").replace(/[&<>"']/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m])); }
+  function qs(sel){ return document.querySelector(sel); }
+  function getHash(){ return location.hash || "#/"; }
+  function route(){
+    const h = getHash().replace(/^#/, "");
+    const [p, q] = h.split("?"); 
+    const parts = p.split("/").filter(Boolean);
+    if (parts.length===0) return renderHome();
+    if (parts[0]==="track" && parts[1]) return renderTrack(parts[1]);
+    if (parts[0]==="lesson" && parts[1]) return renderLesson(parts[1]);
+    if (parts[0]==="tasks") return renderTasks();
+    if (parts[0]==="task" && parts[1]) return renderTask(Number(parts[1]));
+    if (parts[0]==="search") return renderSearch();
+    if (parts[0]==="login") return renderLogin();
+    if (parts[0]==="admin") return renderAdmin();
+    if (parts[0]==="assistant") return renderAssistant();
+    render404();
+  }
+
+  async function apiGet(path){
+    const r = await fetch(API + path);
+    return r.json();
+  }
+  async function apiPost(path, body, token){
+    const r = await fetch(API + path, {
+      method:"POST",
+      headers: { "Content-Type":"application/json", ...(token?{"Authorization":"Bearer "+token}:{}) },
+      body: JSON.stringify(body||{})
+    });
+    return r.json();
+  }
+  async function apiPostForm(path, formData, token){
+    const r = await fetch(API + path, {
+      method:"POST",
+      headers: { ...(token?{"Authorization":"Bearer "+token}:{}) },
+      body: formData
+    });
+    return r.json();
+  }
+
+  async function refresh(){
+    const j = await apiGet("/public/state");
+    if (!j.ok) throw new Error(j.error||"خطأ");
+    state.tracks = j.tracks; state.lessons = j.lessons;
+    state.generations = j.generations; state.tasks = j.tasks; state.taskDocs = j.taskDocs;
+  }
+
+  function trackLessons(trackId){
+    return state.lessons.filter(l=>l.track_id===trackId);
+  }
+
+  function renderHome(){
+    const app = qs("#app");
+    app.innerHTML = `
+      <div class="card">
+        <div class="row">
+          <div>
+            <h1>مرحباً بك في BTEC</h1>
+            <div class="muted">اختر مسارك وابدأ التعلم بأسلوب الشرائح المنظم.</div>
+          </div>
+          <span class="pill">دروس • مهمات • مستندات</span>
+        </div>
+      </div>
+      <div style="height:14px"></div>
+      <div class="grid">
+        ${state.tracks.map(t=>`
+          <div class="card track" onclick="go('#/track/${esc(t.id)}')" style="cursor:pointer">
+            <h2>${esc(t.title)}</h2>
+            <div class="muted">${esc(t.description||"")}</div>
+            <div style="height:10px"></div>
+            <div class="pill">${trackLessons(t.id).length} درس</div>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderTrack(trackId){
+    const t = state.tracks.find(x=>x.id===trackId);
+    const lessons = trackLessons(trackId);
+    const app = qs("#app");
+    if (!t) return render404();
+    app.innerHTML = `
+      <div class="card">
+        <div class="row">
+          <div>
+            <h1>${esc(t.title)}</h1>
+            <div class="muted">${esc(t.description||"")}</div>
+          </div>
+          <button class="btn" onclick="go('#/')">رجوع</button>
+        </div>
+      </div>
+      <div style="height:14px"></div>
+      <div class="card">
+        <h2>الدروس</h2>
+        <div class="list">
+          ${lessons.map(l=>`
+            <div class="card" style="background:rgba(255,255,255,.03)" onclick="go('#/lesson/${esc(l.id)}');" role="button">
+              <div class="row">
+                <div>
+                  <b>${esc(l.title)}</b>
+                  <div class="muted" style="margin-top:4px">${esc(l.description||"")}</div>
+                </div>
+                <span class="pill">${esc(l.level||"")}</span>
+              </div>
+            </div>
+          `).join("") || `<div class="muted">لا يوجد دروس حالياً.</div>`}
+        </div>
+      </div>
+    `;
+  }
+
+  async function renderLesson(lessonId){
+    const app = qs("#app");
+    app.innerHTML = `<div class="card">تحميل الدرس...</div>`;
+    const j = await apiGet(`/public/lesson?id=${encodeURIComponent(lessonId)}`);
+    if (!j.ok) return app.innerHTML = `<div class="card"><b>تعذر تحميل الدرس</b><div class="muted">${esc(j.error||"")}</div></div>`;
+    const { lesson, slides } = j;
+
+    // fetch progress if student token exists
+    let prog = null;
+    if (state.token) {
+      const pj = await fetch(API+`/student/progress?lessonId=${encodeURIComponent(lessonId)}`, { headers: { "Authorization":"Bearer "+state.token } });
+      const pjj = await pj.json().catch(()=>null);
+      if (pjj && pjj.ok) prog = pjj.progress;
+    }
+    let idx = Math.max(0, Math.min(slides.length-1, (prog?.last_slide_idx ?? 0)));
+
+    function render(){
+      const s = slides[idx] || { title:"", points:[], code:"" };
+      const completed = !!prog?.completed;
+      app.innerHTML = `
+        <div class="card">
+          <div class="row">
+            <div>
+              <h1>${esc(lesson.title)}</h1>
+              <div class="muted">${esc(lesson.description||"")}</div>
+            </div>
+            <div class="row">
+              <button class="btn" onclick="go('#/track/${esc(lesson.track_id)}')">رجوع</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="card">
+          <div class="slideTop">
+            <div class="slideBrand">
+              <img src="/assets/logo.svg" alt="BTEC"/>
+              <div>
+                <b>BTEC zone</b>
+                <div class="muted" style="font-size:12px">${esc((state.tracks.find(t=>t.id===lesson.track_id)?.title)||"")}</div>
+                <div class="slideCredit">${CREDIT}</div>
+              </div>
+            </div>
+
+            <div class="row">
+              <span class="pill">${idx+1} / ${slides.length}</span>
+              ${state.token ? `<span class="pill">${completed ? '<span class="tagOk">مكتمل</span>' : '<span class="muted">غير مكتمل</span>'}</span>` : ``}
+            </div>
+          </div>
+
+          <h2>${esc(s.title||"")}</h2>
+          <ul class="points">${(s.points||[]).map(p=>`<li>${esc(p)}</li>`).join("")}</ul>
+          ${s.code ? `<div class="kbd" dir="ltr">${esc(s.code)}</div>` : ``}
+
+          <div style="height:12px"></div>
+          <div class="row">
+            <div class="row">
+              <button class="btn" ${idx===0?'disabled':''} onclick="prev()">السابق</button>
+              <button class="btn" ${idx===slides.length-1?'disabled':''} onclick="next()">التالي</button>
+            </div>
+
+            <div class="row">
+              ${state.token ? `
+                <button class="btn primary" onclick="markComplete()">تعليم كمكتمل</button>
+              ` : `<span class="muted">لتسجيل التقدم: سجّل دخولك كطالب.</span>`}
+            </div>
+          </div>
+        </div>
+      `;
+      window.prev = ()=>{ if(idx>0){ idx--; saveProgress(false); render(); } };
+      window.next = ()=>{ if(idx<slides.length-1){ idx++; saveProgress(false); render(); } };
+      window.markComplete = async ()=>{
+        await saveProgress(true);
+        render();
+      };
+    }
+
+    async function saveProgress(setComplete){
+      if (!state.token) return;
+      const body = { lessonId, lastSlideIdx: idx, completed: setComplete ? 1 : (prog?.completed||0) };
+      const res = await apiPost("/student/progress", body, state.token);
+      if (res.ok) {
+        prog = { ...(prog||{}), last_slide_idx: idx, completed: body.completed };
+      }
+    }
+    render();
+  }
+
+  function renderTasks(){
+    const app = qs("#app");
+    app.innerHTML = `
+      <div class="card">
+        <h1>المهمات</h1>
+        <div class="muted">اختر الجيل ثم المهمة.</div>
+      </div>
+      <div style="height:14px"></div>
+      <div class="grid">
+        ${state.generations.map(g=>`
+          <div class="card track">
+            <div class="row">
+              <b>${esc(g.name)}</b>
+              <span class="pill">#${g.id}</span>
+            </div>
+            <div style="height:10px"></div>
+            <div class="list">
+              ${state.tasks.filter(t=>t.generation_id===g.id).slice(0,4).map(t=>`
+                <button class="btn" onclick="go('#/task/${t.id}')">${esc(t.title)}</button>
+              `).join("") || `<div class="muted">لا يوجد مهمات</div>`}
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderTask(taskId){
+    const t = state.tasks.find(x=>x.id===taskId);
+    const docs = state.taskDocs.filter(d=>d.task_id===taskId);
+    const app = qs("#app");
+    if (!t) return render404();
+    app.innerHTML = `
+      <div class="card">
+        <div class="row">
+          <div>
+            <h1>${esc(t.title)}</h1>
+            <div class="muted">${esc(t.body||"")}</div>
+          </div>
+          <button class="btn" onclick="go('#/tasks')">رجوع</button>
+        </div>
+      </div>
+      <div style="height:14px"></div>
+      <div class="card">
+        <h2>المستندات</h2>
+        <div class="list">
+          ${docs.map(d=>`
+            <div class="row card" style="background:rgba(255,255,255,.03)">
+              <div><b>${esc(d.file_name)}</b><div class="muted" style="font-size:12px">${esc(d.download_url)}</div></div>
+              <a class="btn primary" href="${esc(d.download_url)}" target="_blank" rel="noopener">فتح / تنزيل</a>
+            </div>
+          `).join("") || `<div class="muted">لا يوجد مستندات.</div>`}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderSearch(){
+    const app = qs("#app");
+    app.innerHTML = `
+      <div class="card">
+        <h1>بحث</h1>
+        <input class="input" id="q" placeholder="ابحث عن درس أو مهمة أو مستند..." oninput="doSearch()"/>
+        <div style="height:12px"></div>
+        <div id="results" class="list"></div>
+      </div>
+    `;
+    window.doSearch = ()=>{
+      const q = (qs("#q").value||"").trim().toLowerCase();
+      const res = qs("#results");
+      if (!q) { res.innerHTML = `<div class="muted">اكتب كلمة للبحث.</div>`; return; }
+
+      const hits = [];
+
+      for (const tr of state.tracks) {
+        if ((tr.title||"").toLowerCase().includes(q)) hits.push({ type:"مسار", title: tr.title, href:`#/track/${tr.id}` });
+      }
+      for (const l of state.lessons) {
+        if ((l.title||"").toLowerCase().includes(q) || (l.description||"").toLowerCase().includes(q)) {
+          hits.push({ type:"درس", title: l.title, href:`#/lesson/${l.id}` });
+        }
+      }
+      for (const t of state.tasks) {
+        if ((t.title||"").toLowerCase().includes(q) || (t.body||"").toLowerCase().includes(q)) {
+          hits.push({ type:"مهمة", title: t.title, href:`#/task/${t.id}` });
+        }
+      }
+      for (const d of state.taskDocs) {
+        if ((d.file_name||"").toLowerCase().includes(q)) {
+          hits.push({ type:"ملف", title: d.file_name, href: d.download_url, external:true });
+        }
+      }
+
+      res.innerHTML = hits.length ? hits.map(h=>`
+        <div class="row card" style="background:rgba(255,255,255,.03)">
+          <div><span class="pill">${esc(h.type)}</span> <b style="margin-inline-start:8px">${esc(h.title)}</b></div>
+          <a class="btn primary" href="${esc(h.href)}" ${h.external?`target="_blank" rel="noopener"`:""}>فتح</a>
+        </div>
+      `).join("") : `<div class="muted">لا توجد نتائج.</div>`;
+    };
+    window.doSearch();
+  }
+
+  function renderLogin(){
+    const app = qs("#app");
+    app.innerHTML = `
+      <div class="card">
+        <h1>تسجيل الدخول</h1>
+        <div class="two">
+          <div class="card" style="background:rgba(255,255,255,.03)">
+            <h2>طالب</h2>
+            <input class="input" id="s_login" placeholder="اسم المستخدم أو البريد"/>
+            <div style="height:8px"></div>
+            <input class="input" id="s_pass" type="password" placeholder="كلمة المرور"/>
+            <div style="height:10px"></div>
+            <button class="btn primary" onclick="studentLogin()">دخول</button>
+            <button class="btn" onclick="studentRegister()">إنشاء حساب</button>
+            <div id="s_msg" class="muted" style="margin-top:10px"></div>
+          </div>
+          <div class="card" style="background:rgba(255,255,255,.03)">
+            <h2>أدمن</h2>
+            <input class="input" id="a_user" placeholder="اسم المستخدم"/>
+            <div style="height:8px"></div>
+            <input class="input" id="a_pass" type="password" placeholder="كلمة المرور"/>
+            <div style="height:10px"></div>
+            <button class="btn primary" onclick="adminLogin()">دخول الأدمن</button>
+            <div id="a_msg" class="muted" style="margin-top:10px"></div>
+          </div>
+        </div>
+      </div>
+    `;
+    window.studentLogin = async ()=>{
+      const login = qs("#s_login").value.trim();
+      const password = qs("#s_pass").value;
+      const r = await apiPost("/student/login", { login, password });
+      qs("#s_msg").textContent = r.ok ? "تم تسجيل الدخول" : (r.error||"خطأ");
+      if (r.ok) { state.token = r.token; localStorage.setItem("BTEC_STU_TOKEN", r.token); }
+    };
+    window.studentRegister = async ()=>{
+      const login = qs("#s_login").value.trim();
+      const password = qs("#s_pass").value;
+      const isEmail = login.includes("@");
+      const body = isEmail ? { email: login, password } : { username: login, password };
+      const r = await apiPost("/student/register", body);
+      qs("#s_msg").textContent = r.ok ? "تم إنشاء الحساب" : (r.error||"خطأ");
+      if (r.ok) { state.token = r.token; localStorage.setItem("BTEC_STU_TOKEN", r.token); }
+    };
+    window.adminLogin = async ()=>{
+      const user = qs("#a_user").value.trim();
+      const pass = qs("#a_pass").value;
+      const r = await apiPost("/admin/login", { user, pass });
+      qs("#a_msg").textContent = r.ok ? "تم تسجيل دخول الأدمن" : (r.error||"خطأ");
+      if (r.ok) { state.adminToken = r.token; localStorage.setItem("BTEC_ADM_TOKEN", r.token); go("#/admin"); }
+    };
+  }
+
+  function renderAdmin(){
+    const app = qs("#app");
+    if (!state.adminToken) {
+      app.innerHTML = `<div class="card"><b>لوحة التحكم تحتاج تسجيل دخول.</b><div class="muted">اذهب لصفحة تسجيل الدخول.</div><div style="height:10px"></div><button class="btn primary" onclick="go('#/login')">تسجيل الدخول</button></div>`;
+      return;
+    }
+    app.innerHTML = `
+      <div class="card">
+        <div class="row">
+          <div><h1>لوحة التحكم</h1><div class="muted">إدارة المسارات والدروس والمهمات.</div><div class="slideCredit">${CREDIT}</div></div>
+          <button class="btn danger" onclick="logoutAdmin()">تسجيل خروج</button>
+        </div>
+      </div>
+
+      <div style="height:14px"></div>
+
+      <div class="two">
+        <div class="card">
+          <h2>إضافة/تحديث درس</h2>
+          <div class="muted">اختر المسار ثم اكتب الدرس والشرائح.</div>
+          <div style="height:10px"></div>
+
+          <select class="input" id="trackSel">
+            ${state.tracks.map(t=>`<option value="${esc(t.id)}">${esc(t.title)}</option>`).join("")}
+          </select>
+          <div style="height:8px"></div>
+          <input class="input" id="lessonTitle" placeholder="عنوان الدرس"/>
+          <div style="height:8px"></div>
+          <textarea class="input" id="slidesJson" rows="10" placeholder='Slides JSON: مثال:
+[
+  {"title":"مقدمة","points":["نقطة 1","نقطة 2"],"code":"print(1)"},
+  {"title":"مثال","points":["..."],"code":""}
+]'></textarea>
+
+          <div style="height:10px"></div>
+          <button class="btn primary" onclick="saveLesson()">حفظ الدرس</button>
+          <div id="admMsg" class="muted" style="margin-top:10px"></div>
+        </div>
+
+        <div class="card">
+          <h2>رفع ملف لمهمة</h2>
+          <div class="muted">اختر مهمة ثم ارفع الملف (PDF/صور/Word...) — يظهر للطلاب مباشرة.</div>
+          <div style="height:10px"></div>
+
+          <select class="input" id="taskSel">
+            ${state.tasks.slice(0,200).map(t=>`<option value="${t.id}">#${t.id} - ${esc(t.title)}</option>`).join("")}
+          </select>
+          <div style="height:8px"></div>
+          <input class="input" id="fileInp" type="file"/>
+          <div style="height:10px"></div>
+          <button class="btn primary" onclick="uploadDoc()">رفع</button>
+          <div id="upMsg" class="muted" style="margin-top:10px"></div>
+        </div>
+      </div>
+    `;
+
+    window.logoutAdmin = ()=>{ state.adminToken=""; localStorage.removeItem("BTEC_ADM_TOKEN"); go("#/"); };
+    window.saveLesson = async ()=>{
+      try{
+        const track_id = qs("#trackSel").value;
+        const title = qs("#lessonTitle").value.trim();
+        const slides = JSON.parse(qs("#slidesJson").value || "[]");
+        const r = await apiPost("/admin/lessons", { track_id, title, slides }, state.adminToken);
+        qs("#admMsg").textContent = r.ok ? "تم حفظ الدرس" : (r.error||"خطأ");
+        if (r.ok){ await refresh(); }
+      }catch(e){ qs("#admMsg").textContent = "تأكد من صيغة JSON"; }
+    };
+    window.uploadDoc = async ()=>{
+      const taskId = qs("#taskSel").value;
+      const f = qs("#fileInp").files[0];
+      if (!f) { qs("#upMsg").textContent="اختر ملفاً"; return; }
+      const fd = new FormData();
+      fd.append("file", f);
+      const r = await apiPostForm(`/admin/task-docs/upload?taskId=${encodeURIComponent(taskId)}`, fd, state.adminToken);
+      qs("#upMsg").textContent = r.ok ? "تم رفع الملف" : (r.error||"خطأ");
+      if (r.ok){ await refresh(); }
+    };
+  }
+
+  function renderAssistant(){
+    const app = qs("#app");
+    app.innerHTML = `
+      <div class="grid" style="grid-template-columns: 1.2fr .8fr;">
+        <div class="card">
+          <h1>مساعد الدروس والمهمات</h1>
+          <div class="muted">اكتب سؤالك. سأبحث داخل دروس المنصة والمهمات، ثم أقدّم شرحًا وخطوات وحلًا مقترحًا (مع أمثلة) حسب المحتوى الموجود.</div>
+          <div style="height:10px"></div>
+          <textarea class="input" id="ask" rows="4" style="resize:vertical" placeholder="مثال: اشرح لي if/else مع مثال. أو: كيف أحل مهمة الشبكات رقم 2؟"></textarea>
+          <div style="height:10px"></div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap">
+            <button class="btn primary" onclick="assistRun()">اسأل</button>
+            <button class="btn" onclick="assistClear()">مسح</button>
+          </div>
+          <div style="height:12px"></div>
+          <div id="aStatus" class="muted" style="font-size:12px"></div>
+          <div style="height:12px"></div>
+          <div id="aAnswer" class="card" style="background:rgba(255,255,255,.03)"></div>
+        </div>
+
+        <div class="card">
+          <h2 style="margin:0 0 8px">نتائج من المنصة</h2>
+          <div class="muted" style="font-size:12px">الدروس/المهمات الأقرب لسؤالك</div>
+          <div style="height:10px"></div>
+          <div id="aRes" class="list"></div>
+        </div>
+      </div>
+    `;
+
+    window.assistClear = ()=>{
+      qs("#ask").value="";
+      qs("#aAnswer").innerHTML="";
+      qs("#aRes").innerHTML="";
+      qs("#aStatus").textContent="";
+    };
+
+    // Lightweight "local model" (on-device) via WebLLM when available.
+    // If it can't load, we still answer using extracted content + templates.
+    let engine = null;
+    let engineReady = false;
+
+    async function ensureEngine(){
+      if (engineReady) return true;
+      const st = qs("#aStatus");
+      try{
+        st.textContent = "جارٍ تجهيز المساعد…";
+        // Lazy import (ESM) from CDN
+        const webllm = await import("https://cdn.jsdelivr.net/npm/@mlc-ai/web-llm/+esm");
+        engine = await webllm.CreateMLCEngine(
+          "Llama-3.2-1B-Instruct-q4f16_1",
+          { initProgressCallback: (p)=>{ st.textContent = `تجهيز المساعد: ${Math.round((p.progress||0)*100)}%`; } }
+        );
+        engineReady = true;
+        st.textContent = "";
+        return true;
+      }catch(e){
+        // silently fall back (no scary message to student)
+        st.textContent = "";
+        engine = null; engineReady=false;
+        return false;
+      }
+    }
+
+    function scoreText(q, t){
+      if (!q || !t) return 0;
+      const qs = q.split(/\s+/).filter(x=>x.length>2);
+      const tt = t.toLowerCase();
+      let s=0;
+      for(const w of qs){ if(tt.includes(w)) s += 3; }
+      return s;
+    }
+
+    function extractLessonText(lesson, slides){
+      const parts = [];
+      parts.push(`العنوان: ${lesson.title}`);
+      if (lesson.description) parts.push(`الوصف: ${lesson.description}`);
+      for (const s of slides){
+        parts.push(`شريحة ${s.idx+1}: ${s.title||""}`);
+        const pts = (s.points||[]).slice(0,6);
+        if (pts.length) parts.push("نقاط: " + pts.join("، "));
+        if (s.code) parts.push("كود:\n" + s.code);
+        if (s.notes) parts.push("ملاحظات:\n" + s.notes);
+      }
+      return parts.join("\n");
+    }
+
+    async function fetchLessonBundle(id){
+      const j = await apiGet(`/public/lesson?id=${encodeURIComponent(id)}`);
+      if (!j.ok) return null;
+      return { lesson: j.lesson, slides: j.slides||[] };
+    }
+
+    function renderMatches(scoredLessons, scoredTasks){
+      const out = qs("#aRes");
+      const blocks = [];
+
+      if (scoredLessons.length){
+        blocks.push(`<div class="muted" style="font-size:12px;margin:0 0 6px">دروس</div>`);
+        blocks.push(scoredLessons.map(x=>`
+          <div class="row card" style="background:rgba(255,255,255,.03)">
+            <div>
+              <b>${esc(x.title)}</b>
+              <div class="muted" style="font-size:12px">${esc(x.trackName||"")}</div>
+            </div>
+            <button class="btn primary" onclick="go('#/lesson/${esc(x.id)}')">فتح</button>
+          </div>
+        `).join(""));
+      }
+
+      if (scoredTasks.length){
+        blocks.push(`<div style="height:10px"></div><div class="muted" style="font-size:12px;margin:0 0 6px">مهمات</div>`);
+        blocks.push(scoredTasks.map(t=>`
+          <div class="row card" style="background:rgba(255,255,255,.03)">
+            <div>
+              <b>${esc(t.title||("مهمة رقم "+t.id))}</b>
+              <div class="muted" style="font-size:12px">${esc(t.description||"")}</div>
+            </div>
+            <button class="btn" onclick="go('#/task/${esc(t.id)}')">فتح</button>
+          </div>
+        `).join(""));
+      }
+
+      out.innerHTML = blocks.length ? blocks.join("") : `<div class="muted">لا توجد نتائج قريبة. جرّب كلمات أوضح.</div>`;
+    }
+
+    function fallbackAnswer(q, bestLessonText, bestTask){
+      const chunks = [];
+      chunks.push(`<div class="muted" style="font-size:12px">${esc(CREDIT)}</div>`);
+      chunks.push(`<div style="height:8px"></div>`);
+      chunks.push(`<b>إجابة مساعدة بناءً على محتوى المنصة</b>`);
+      chunks.push(`<div style="height:8px"></div>`);
+      chunks.push(`<div class="muted">السؤال:</div><div>${esc(q)}</div>`);
+      chunks.push(`<div style="height:10px"></div>`);
+      if (bestTask){
+        chunks.push(`<div class="muted">مهمة قريبة:</div><div><b>${esc(bestTask.title||("مهمة رقم "+bestTask.id))}</b></div>`);
+        if (bestTask.description) chunks.push(`<div class="muted" style="font-size:12px">${esc(bestTask.description)}</div>`);
+        chunks.push(`<div style="height:10px"></div>`);
+      }
+      if (bestLessonText){
+        // show a compact snippet
+        const lines = bestLessonText.split("\n").slice(0,14).join("\n");
+        chunks.push(`<div class="muted">مقتطف من الدرس الأقرب:</div>`);
+        chunks.push(`<pre style="white-space:pre-wrap">${esc(lines)}</pre>`);
+      }
+      chunks.push(`<div class="muted" style="font-size:12px">إذا ارسلت لي عنوان الدرس أو رقم المهمة بدقة، أطلع لك حل أدق خطوة بخطوة.</div>`);
+      return chunks.join("");
+    }
+
+    window.assistRun = async ()=>{
+      const q = (qs("#ask").value||"").trim();
+      const ql = q.toLowerCase();
+      const ans = qs("#aAnswer");
+      ans.innerHTML = "";
+      if (!q){ qs("#aRes").innerHTML = `<div class="muted">اكتب سؤالاً أولاً.</div>`; return; }
+
+      // rank lessons
+      const trackById = Object.fromEntries(state.tracks.map(t=>[t.id,t]));
+      const lessonsRanked = state.lessons
+        .map(l=>{
+          const tr = trackById[l.track_id];
+          const blob = `${l.title||""} ${l.description||""} ${tr?tr.name:""}`.toLowerCase();
+          const s = scoreText(ql, blob);
+          return { ...l, score:s, trackName: tr?tr.name:"" };
+        })
+        .filter(x=>x.score>0)
+        .sort((a,b)=>b.score-a.score)
+        .slice(0,5);
+
+      // rank tasks
+      const tasksRanked = (state.tasks||[])
+        .map(t=>{
+          const blob = `${t.title||""} ${t.description||""}`.toLowerCase();
+          const s = scoreText(ql, blob);
+          return { ...t, score:s };
+        })
+        .filter(x=>x.score>0)
+        .sort((a,b)=>b.score-a.score)
+        .slice(0,5);
+
+      renderMatches(lessonsRanked, tasksRanked);
+
+      // fetch top lesson full text as context
+      let lessonBundle = null;
+      if (lessonsRanked[0]) lessonBundle = await fetchLessonBundle(lessonsRanked[0].id);
+
+      let context = "";
+      if (lessonBundle){
+        context = extractLessonText(lessonBundle.lesson, lessonBundle.slides);
+      }
+
+      // Try on-device model
+      const ok = await ensureEngine();
+      if (ok && engine){
+        try{
+          const system = `أنت مساعد تعليمي داخل منصة BTEC zone. أجب بالعربية وبأسلوب واضح. إذا السؤال يتعلق بمهمة، أعطِ خطوات الحل ثم مثال/كود. اعتمد فقط على السياق المرفق، وإذا لم يكفِ السياق فاطلب توضيحًا. أضف تنبيهًا قصيرًا إذا كان هناك أكثر من احتمال.`;
+          const user = `السؤال: ${q}\n\nسياق من المنصة:\n${context}\n\nمهمات قريبة:\n${(tasksRanked.slice(0,2)||[]).map(t=>`- ${t.title||("مهمة "+t.id)}: ${t.description||""}`).join("\n")}`;
+          const reply = await engine.chat.completions.create({
+            messages: [
+              { role:"system", content: system },
+              { role:"user", content: user }
+            ],
+            temperature: 0.2,
+            max_tokens: 450
+          });
+          const text = reply.choices?.[0]?.message?.content || "";
+          ans.innerHTML = `
+            <div class="muted" style="font-size:12px">${esc(CREDIT)}</div>
+            <div style="height:10px"></div>
+            <div style="white-space:pre-wrap; line-height:1.7">${esc(text)}</div>
+          `;
+          return;
+        }catch(e){
+          // fall back
+        }
+      }
+
+      // fallback: extracted context + guidance
+      ans.innerHTML = fallbackAnswer(q, context, tasksRanked[0]||null);
+    };
+  }
+
+  function render404(){
+    qs("#app").innerHTML = `<div class="card"><b>الصفحة غير موجودة</b><div class="muted">ارجع للرئيسية.</div><div style="height:10px"></div><button class="btn primary" onclick="go('#/')">الرئيسية</button></div>`;
+  }
+
+  (async function boot(){
+    state.token = localStorage.getItem("BTEC_STU_TOKEN") || "";
+    state.adminToken = localStorage.getItem("BTEC_ADM_TOKEN") || "";
+    try { await refresh(); } catch(e) {}
+    route();
+    window.addEventListener("hashchange", route);
+  })();
+</script>
 </body>
 </html>
