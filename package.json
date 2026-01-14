@@ -1,0 +1,12 @@
+{
+  "name": "btec-cloudflare",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler pages dev public --compatibility-date=2025-01-01",
+    "deploy:info": "echo 'Deploy via Cloudflare Pages Git integration'"
+  },
+  "devDependencies": {
+    "wrangler": "^3.80.0"
+  }
+}
