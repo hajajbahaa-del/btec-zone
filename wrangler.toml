@@ -1,8 +1,1 @@
-name = "btec-pages"
-compatibility_date = "2025-01-01"
 
-# For local dev only. In production set bindings in Cloudflare Dashboard (Pages project Settings > Bindings).
-[[d1_databases]]
-binding = "DB"
-database_name = "btec"
-database_id = "REPLACE_IN_CLOUDFLARE_DASHBOARD"
