@@ -1,4 +1,10 @@
--- Core content
+-- BTEC zone database schema (Cloudflare D1)
+-- هذا الملف يُستخدم لتجهيز قاعدة البيانات لأول مرة.
+-- إذا كانت لديك قاعدة بيانات سابقة، اترك CREATE TABLE كما هو، ويمكنك فقط تشغيل جزء INSERT الخاص بالمسارات.
+
+-- =========================
+-- Core content (Tracks/Lessons)
+-- =========================
 CREATE TABLE IF NOT EXISTS tracks (
   id TEXT PRIMARY KEY,
   title TEXT NOT NULL,
@@ -33,7 +39,9 @@ CREATE TABLE IF NOT EXISTS lesson_slides (
   FOREIGN KEY(lesson_id) REFERENCES lessons(id) ON DELETE CASCADE
 );
 
--- Tasks / documents (kept from your current platform)
+-- =========================
+-- Tasks / documents
+-- =========================
 CREATE TABLE IF NOT EXISTS generations (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
@@ -60,7 +68,9 @@ CREATE TABLE IF NOT EXISTS task_docs (
   FOREIGN KEY(task_id) REFERENCES tasks(id) ON DELETE CASCADE
 );
 
+-- =========================
 -- Students + progress
+-- =========================
 CREATE TABLE IF NOT EXISTS students (
   id TEXT PRIMARY KEY,
   username TEXT UNIQUE,
@@ -79,7 +89,7 @@ CREATE TABLE IF NOT EXISTS progress (
   FOREIGN KEY(student_id) REFERENCES students(id) ON DELETE CASCADE
 );
 
--- Admin audit (optional)
+-- Admin audit (اختياري)
 CREATE TABLE IF NOT EXISTS admin_audit (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   action TEXT NOT NULL,
@@ -87,12 +97,20 @@ CREATE TABLE IF NOT EXISTS admin_audit (
   created_at TEXT DEFAULT (datetime('now'))
 );
 
+-- =========================
 -- Seed default tracks
-INSERT OR IGNORE INTO tracks (id, title, description, sort_order) VALUES
-('python', 'Python', 'تعلم أساسيات بايثون بأسلوب الشرائح', 1),
-('csharp', 'C#', 'مسار متكامل لتعلم C#', 2),
-('html', 'HTML', 'مسار HTML من الصفر', 3),
-('css', 'CSS', 'تصميم واجهات باستخدام CSS', 4),
-('flutter', 'Flutter', 'تطوير تطبيقات باستخدام Flutter', 5),
-('dart', 'Dart', 'لغة Dart للمبتدئين', 6),
-('cyber', 'الأمن السيبراني', 'التوعية والحماية الرقمية والاستخدام الآمن', 7);
+-- =========================
+-- يمكنك تعديل هذه القائمة كما تريد. (INSERT OR IGNORE) لا يكرر نفس id.
+INSERT OR IGNORE INTO tracks (id, title, description, icon, sort_order) VALUES
+('it', 'أساسيات IT', 'مفاهيم تقنية عامة وبداية قوية في تكنولوجيا المعلومات.', '💻', 1),
+('net', 'الشبكات', 'أساسيات الشبكات والاتصال + تطبيقات عملية.', '🌐', 2),
+('cyber', 'الأمن السيبراني', 'التوعية والحماية الرقمية والاستخدام الآمن.', '🛡️', 3),
+
+('python', 'Python', 'تعلم أساسيات بايثون بأسلوب الشرائح وأمثلة عملية.', '🐍', 10),
+('csharp', 'C#', 'مسار متكامل لتعلم C# وبناء تطبيقات.', '♯', 11),
+('cpp', 'C++', 'أساسيات C++ ومفاهيم البرمجة الكائنية.', '➕➕', 12),
+('java', 'Java', 'تعلم Java من الصفر مع أمثلة واضحة.', '☕', 13),
+('html', 'HTML', 'مسار HTML من الصفر لبناء صفحات الويب.', '🔤', 14),
+('css', 'CSS', 'تصميم واجهات حديثة باستخدام CSS.', '🎨', 15),
+('flutter', 'Flutter', 'تطوير تطبيقات موبايل باستخدام Flutter.', '📱', 16),
+('dart', 'Dart', 'لغة Dart للمبتدئين (مناسبة لFlutter).', '🎯', 17);

@@ -1,69 +1,68 @@
-# BTEC zone (Cloudflare Pages + D1) — بدون تشغيل جهازك
+# منصة BTEC zone (Cloudflare Pages + D1)
 
-هذا المشروع نسخة جاهزة لتشغيل منصة BTEC zone على **Cloudflare Pages** بدون سيرفر تقليدي:
-- Frontend: Cloudflare Pages (تحديث تلقائي عند أي Push على GitHub)
+هذا المشروع نسخة جاهزة لتشغيل منصة **BTEC zone** على **Cloudflare Pages**:
+- Frontend: Cloudflare Pages (Static)
 - Backend: Cloudflare Pages Functions (Serverless)
 - Database: Cloudflare D1 (SQL)
-- ملفات المهمات: يتم رفعها تلقائياً إلى GitHub Repo عبر GitHub API (مخزنة كنسخة احتياطية دائمة)
-
-> ملاحظة: رفع الملفات عبر GitHub API مناسب للملفات الصغيرة/المتوسطة (مثلاً ≤ 20MB). لو احتجت ملفات كبيرة لاحقاً نضيف تخزين بديل.
+- ملفات المهمات: يتم رفعها إلى GitHub Repo (نسخة احتياطية) عبر GitHub API
 
 ---
 
 ## 1) المتطلبات
 - حساب GitHub
-- حساب Cloudflare (مجاني)
+- حساب Cloudflare
 - (اختياري للتجربة محلياً) Node.js + npm
 
 ---
 
 ## 2) رفع المشروع إلى GitHub
-1. أنشئ Repository جديد على GitHub (مثلاً: `btec`)
-2. ارفع محتويات هذا المشروع كما هي إلى الـ repo (باستخدام Upload في GitHub أو Git)
+1. أنشئ Repository جديد على GitHub (مثلاً: `btec-zone`)
+2. ارفع محتويات هذا المشروع كما هي إلى الـ repo
 3. تأكد أن الفرع الأساسي اسمه `main`
 
 ---
 
-## 3) إنشاء قاعدة بيانات D1 (من لوحة Cloudflare)
-1. افتح Cloudflare Dashboard
-2. اذهب إلى **Workers & Pages**
-3. اذهب إلى **D1**
-4. اضغط **Create database**
-5. سمّها مثلاً: `btec`
+## 3) إنشاء قاعدة بيانات D1
+1. من Cloudflare Dashboard: **Workers & Pages**
+2. اذهب إلى **D1** ثم **Create database**
+3. سمّها مثلاً: `btec`
 
 بعد الإنشاء: افتح قاعدة البيانات ثم **Run SQL** والصق محتوى ملف `schema.sql` واضغط Run.
 
 ---
 
-## 4) إنشاء مشروع Cloudflare Pages وربطه مع GitHub (نشر تلقائي)
-1. اذهب إلى **Workers & Pages**
-2. اختر **Pages** ثم **Create a project**
-3. اختر **Connect to Git** ثم اربط GitHub
-4. اختر Repository الخاص بالمنصة
-5. Build settings:
+## 4) إنشاء مشروع Cloudflare Pages
+1. **Workers & Pages** > **Pages** > **Create a project**
+2. **Connect to Git** ثم اختر Repository الخاص بالمنصة
+3. Build settings:
    - Framework preset: None
    - Build command: (اتركه فارغ)
    - Output directory: `public`
-6. اضغط Deploy
+4. Deploy
 
 ---
 
-## 5) إضافة Bindings (ربط D1 + Secrets) — أهم خطوة
+## 5) أهم خطوة: Bindings + Secrets
 افتح Pages project > **Settings** > **Bindings**:
 
-### A) ربط قاعدة البيانات (D1 Binding)
+### A) D1 Binding
 - Add > D1 database
 - Variable name: `DB`
 - اختر قاعدة `btec`
 
-### B) Secrets (بيانات الأدمن + JWT + GitHub)
+### B) Secrets
 Add > Environment variables (Secrets):
 
-- `ADMIN_USER`  (مثلاً: admin)
-- `ADMIN_PASS`  (كلمة سر قوية)
-- `JWT_SECRET`  (أي نص طويل عشوائي)
+#### بيانات الأدمن (كما طلبت)
+- `ADMIN_USER` = `bahaahajaj@btec.com`
+- `ADMIN_PASS` = `bahaahajaj0775135361btec2007`
 
-لرفع الملفات على GitHub (مطلوب لرفع ملفات المهمات):
+> تنبيه مهم: لا تضع كلمة المرور داخل الكود أو GitHub إذا كان الريبو عام. الأفضل تخزينها كـ Secret داخل Cloudflare فقط.
+
+#### JWT
+- `JWT_SECRET` = أي نص طويل وعشوائي (مثلاً 40 حرف أو أكثر)
+
+#### GitHub Upload (لرفع ملفات المهمات)
 - `GITHUB_TOKEN`  (GitHub Personal Access Token)
 - `GITHUB_OWNER`  (اسم حساب GitHub)
 - `GITHUB_REPO`   (اسم الريبو الذي تريد تخزين الملفات بداخله)
@@ -72,31 +71,48 @@ Add > Environment variables (Secrets):
 
 ---
 
-## 6) كيف يدخل الأدمن؟
-- افتح الموقع > صفحة تسجيل الدخول: `/#/login`
+## 6) كيف يستخدم الأدمن لوحة التحكم؟
+- افتح الموقع ثم: `/#/login`
 - قسم الأدمن:
-  - Username = قيمة `ADMIN_USER`
-  - Password = قيمة `ADMIN_PASS`
+  - البريد = `ADMIN_USER`
+  - كلمة المرور = `ADMIN_PASS`
 - ثم ادخل لوحة التحكم: `/#/admin`
 
+### داخل لوحة التحكم يمكنك:
+- إضافة/تعديل درس:
+  - اختيار المسار
+  - كتابة **اسم الدرس** + **باقة/مستوى الدرس** + **شرح مختصر**
+  - إضافة الشرائح بصيغة JSON
+- حذف درس
+- إضافة جيل (2008/2009/2010…)
+- إنشاء مهمة + كتابة وصفها
+- رفع ملفات للمهمة (يمكن اختيار عدة ملفات دفعة واحدة)
+- حذف مهمة
+
 ---
 
-## 7) رفع ملفات للمهمات (بدون خبرة تقنية)
-1. ادخل لوحة التحكم `/#/admin`
-2. في قسم "رفع ملف لمهمة"
-3. اختر مهمة من القائمة
-4. اختر ملف
-5. اضغط "رفع"
-- الملف سيُرفع إلى GitHub داخل `btec_uploads/<taskId>/...`
-- وسيظهر فوراً للطلاب في صفحة المهمة
+## 7) الطالب: حفظ التقدم
+- افتح: `/#/login`
+- اكتب أي **اسم مستخدم** وكلمة مرور ثم اضغط **دخول**
+  - إذا لم يكن الحساب موجوداً سيتم إنشاؤه تلقائياً
+- أثناء مشاهدة الدرس سيتم حفظ:
+  - آخر شريحة وصلت لها
+  - هل أكملت الدرس أم لا
+- في الرئيسية ستظهر لك بطاقة تقدم ونسبة إنجاز
 
 ---
 
-## 8) تشغيل محلي للتجربة (اختياري)
+## 8) المساعد الذكي
+صفحة: `/#/assistant`
+- يقوم بالبحث داخل الدروس/المهمات ثم يجيبك بشرح واضح.
+- يعمل داخل المتصفح باستخدام WebLLM (قد يحتاج وقت أول مرة لتحميل النموذج).
+
+---
+
+## 9) تشغيل محلي (اختياري)
 ```bash
 npm install
 npx wrangler pages dev public
 ```
-> ملاحظة: لكي يعمل D1 محلياً تحتاج ضبط `wrangler.toml` أو استخدام Cloudflare dashboard bindings. في الإنتاج الأفضل ضبط bindings من الداشبورد.
+> ملاحظة: في الإنتاج الأفضل ضبط bindings من الداشبورد.
 
----
